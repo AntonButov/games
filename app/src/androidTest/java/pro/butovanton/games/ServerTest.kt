@@ -27,6 +27,6 @@ class ServerTest {
     TestObserver.test(server.get(0))
         .awaitValue(10000, TimeUnit.SECONDS)
         .assertValue { responseFromServer ->
-            responseFromServer.response == ResponseNet.Ok }
+            responseFromServer?.response == ResponseNet.Ok }
     }
 }

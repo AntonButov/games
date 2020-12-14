@@ -1,29 +1,20 @@
 package pro.butovanton.games
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import okhttp3.internal.notifyAll
 import pro.butovanton.games.databinding.ItemBinding
 import pro.butovanton.games.db.Data
 
 
 class Adapter(private val inflater: LayoutInflater): RecyclerView.Adapter<Adapter.Holder>() {
 
-    private val ENDVALUE = 1
-
-    interface OnMoreData {
-        fun giveMore()
-    }
-
-    var onMoreData: OnMoreData? = null
-        set(value) {
-            field = value
-        }
-
     val games = mutableListOf<Data>()
 
-    class Holder(val binding: ItemBinding) :
+      class Holder(val binding: ItemBinding) :
         RecyclerView.ViewHolder(binding.root)
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder =
@@ -39,12 +30,10 @@ class Adapter(private val inflater: LayoutInflater): RecyclerView.Adapter<Adapte
                 .load(url)
                 .centerCrop()
                 .into(holder.binding.itemLogo)
-
-            if (position == games.size - ENDVALUE)
-                onMoreData?.giveMore()
         }
 
         fun add(gamesMore: List<Data>) {
+            games.clear()
             games.addAll(gamesMore)
             notifyDataSetChanged()
         }

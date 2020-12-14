@@ -1,9 +1,11 @@
 package pro.butovanton.games.repository
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import pro.butovanton.games.App
 import pro.butovanton.games.db.DaoGame
 import pro.butovanton.games.db.Data
@@ -31,16 +33,14 @@ class Repo(val server: Server = (App).appcomponent.getServer(), val dao: DaoGame
 
     private fun serverGetAndSave(offset: Int) {
         server.get(offset).observeForever { responseNet ->
-            if (responseNet.response == ResponseNet.Ok)
+            if (responseNet != null && responseNet!!.response == ResponseNet.Ok)
                 saveToBD(responseNet.body)
-
         }
     }
 
     private fun saveToBD(responseFromServer: ResponseFromServer?) {
         GlobalScope.launch {
-        Mapper().mapGameEntityToData(responseFromServer!!.top).forEach { data ->
-             dao.insert(data) }
+        dao.insert(Mapper().mapGameEntityToData(responseFromServer!!.top))
         }
     }
 }

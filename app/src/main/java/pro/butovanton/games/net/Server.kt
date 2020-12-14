@@ -10,9 +10,9 @@ import retrofit2.Call
 
 class Server(val api : APIInterface) {
 
-    private val responseLD = MutableLiveData<ResponseNet>()
+    private val responseLD = MutableLiveData<ResponseNet?>()
 
-    fun get(offset: Int): LiveData<ResponseNet> {
+    fun get(offset: Int): LiveData<ResponseNet?> {
         api.games(offset)?.enqueue(object: retrofit2.Callback<ResponseFromServer?> {
             override fun onResponse(call: Call<ResponseFromServer?>, response: retrofit2.Response<ResponseFromServer?>) {
                 val responseNet = ResponseNet(ResponseNet.Ok)
@@ -24,6 +24,7 @@ class Server(val api : APIInterface) {
                 responseLD.value = ResponseNet(ResponseNet.Failure)
             }
         })
+        responseLD.value = null
         return responseLD
     }
 }

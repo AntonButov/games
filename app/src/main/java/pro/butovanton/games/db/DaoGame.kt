@@ -30,7 +30,7 @@ interface DaoGame {
 
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(dataLast: Data) : Long
+    suspend fun insert(dataList: List<Data>)
 
     @Query("DELETE FROM data")
     suspend fun delete()

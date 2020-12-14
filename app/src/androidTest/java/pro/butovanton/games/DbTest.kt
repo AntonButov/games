@@ -41,10 +41,9 @@ class DbTest {
     @Test
     fun dbTest() {
         Assert.assertNotNull(dao)
-        GlobalScope.launch {  dao.insert(testData1) }
         dao.getAll().observeForever { value ->
            Assert.assertNotNull(value)
         }
-        GlobalScope.launch { dao.insert(testData2) }
+        GlobalScope.launch { dao.insert(listOf(testData1, testData2)) }
     }
 }
